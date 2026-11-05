@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "condensed",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-05T13:37:14.696Z",
+        "reason": "assistant decision: decision-round sketch of an alternate direction, not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "silkscreen",
+        "files": [
+          ".impeccable/mocks/decision/challenger-gameboy.html"
+        ],
+        "createdAt": "2026-11-05T13:37:15.497Z",
+        "reason": "assistant decision: decision-round sketch of an alternate direction, not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "sans",
+        "files": [
+          ".impeccable/mocks/decision/challenger-gameboy.html"
+        ],
+        "createdAt": "2026-11-05T13:37:16.228Z",
+        "reason": "assistant decision: decision-round sketch of an alternate direction, not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "pixelify sans",
+        "files": [
+          ".impeccable/mocks/decision/challenger-gameboy.html"
+        ],
+        "createdAt": "2026-11-05T13:37:17.011Z",
+        "reason": "assistant decision: decision-round sketch of an alternate direction, not shipped UI"
+      }
+    ]
+  }
+}

@@ -1,126 +1,232 @@
 @import "tailwindcss";
 
 /*
- * Satu sistem untuk semua layar: kertas putih di atas latar navy,
- * satu aksen jingga untuk aksi utama dan penanda soal aktif.
- * Sudut kotak di semua elemen, tanpa bayangan dan tanpa gradien.
+ * Peta Jalur Divisi: satu sesi = satu perjalanan kereta, 10 soal = 10 stasiun.
+ * Rasio warna 60-30-10:
+ *   60  putih rambu + abu muda   (lantai semua layar)
+ *   30  hijau PTPN               (garis jalur, strip nama jalur, papan stasiun)
+ *   10  jingga PTPN              ("posisi kamu", timer, tombol utama)
+ * Biru logo tidak dipakai di antarmuka. Warna diambil dari logo di dinding HO.
  */
 @theme {
-  --color-ground: #1f2b4d; /* latar halaman */
-  --color-paper: #ffffff; /* panel / kartu */
-  --color-surface: #f2f1ee; /* ubin opsi, kolom input */
-  --color-surface-2: #e3e1dc; /* hover, segmen kosong */
-  --color-ink: #1f2b4d;
-  --color-muted: #5d6479;
-  --color-accent: #f7941d;
-  --color-accent-deep: #e07d06;
-  --color-benar: #136c3e;
+  --color-putih: #ffffff;
+  --color-abu: #f3f5f1; /* panel netral, kolom input */
+  --color-garis: #dce3d9; /* bingkai pintu, rel kosong */
+  --color-hijau: #1e7b3c;
+  --color-hijau-tua: #145a2b;
+  --color-hijau-muda: #e3f0e6;
+  --color-jingga: #f39321;
+  --color-jingga-tua: #d97a08;
+  --color-tinta: #2e1b19; /* marun gelap dari wordmark */
+  --color-redup: #675d5a;
   --color-salah: #c9372c;
 
-  --font-sans: "Switzer", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Switzer", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-barlow-condensed), var(--font-barlow), ui-sans-serif, sans-serif;
+
+  /* sudut panel enamel rambu stasiun */
+  --radius-panel: 10px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   --animate-rise: rise 0.6s var(--ease-out) both;
-  --animate-pop: pop 0.35s var(--ease-out) both;
+  --animate-arrive: arrive 0.55s var(--ease-out) both;
+  --animate-stamp: stamp 0.45s var(--ease-out) both;
+  --animate-shake: shake 0.42s ease-in-out both;
+  --animate-float-up: float-up 1.1s var(--ease-out) both;
+  --animate-tick: tick 1s ease-in-out infinite;
 
   @keyframes rise {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(20px);
     }
   }
-  @keyframes pop {
+  /* kereta tiba: papan masuk dari kanan seperti rangkaian yang merapat */
+  @keyframes arrive {
     from {
       opacity: 0;
-      transform: scale(0.96);
+      transform: translateX(48px);
+    }
+  }
+  /* cap stasiun: membesar lalu menetap */
+  @keyframes stamp {
+    0% {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.18);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-9px);
+    }
+    40% {
+      transform: translateX(8px);
+    }
+    60% {
+      transform: translateX(-5px);
+    }
+    80% {
+      transform: translateX(3px);
+    }
+  }
+  @keyframes float-up {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.8);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(-6px) scale(1.05);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-56px) scale(1);
+    }
+  }
+  @keyframes tick {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    12% {
+      transform: scale(1.14);
     }
   }
 }
 
 html {
-  background: var(--color-ground);
+  background: var(--color-putih);
 }
 
 body {
-  background: var(--color-ground);
-  color: var(--color-ink);
-  font-feature-settings: "ss01";
+  background: var(--color-putih);
+  color: var(--color-tinta);
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-ink);
+  background: var(--color-jingga);
+  color: var(--color-tinta);
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--color-jingga);
   outline-offset: 3px;
 }
 
-/* Pita bergaris: baris balok tinta dan kertas bergantian, ornamen satu-satunya */
-.stripe {
-  display: flex;
-  height: var(--stripe-h, 56px);
-  overflow: hidden;
-}
-.stripe > span {
-  flex: 0 0 28px;
-}
-.stripe > span:nth-child(odd) {
-  background: var(--color-ink);
+input {
+  caret-color: var(--color-hijau);
 }
 
-/* Foto arsip: satu perlakuan untuk semua */
-.archival {
-  filter: grayscale(1) contrast(1.08);
+/* ---------- peta jalur ---------- */
+
+/* rel yang terisi hijau sampai stasiun aktif */
+.rail-fill {
+  transform-origin: left center;
+  transition: transform 0.7s var(--ease-out);
 }
 
-/* Silang-pudar foto kebun di halaman awal */
+/* penanda "posisi kamu" meluncur antar stasiun */
+.train {
+  transition: left 0.7s var(--ease-out);
+}
+/* cincin jingga yang berdenyut sekali saat kereta tiba (pakai `scale`, karena `translate` dipakai untuk posisi) */
+.arrival-ping {
+  border: 3px solid var(--color-jingga);
+  opacity: 0;
+  animation: ping 0.9s var(--ease-out) 0.55s 1 both;
+}
+@keyframes ping {
+  0% {
+    opacity: 0.8;
+    scale: 0.8;
+  }
+  100% {
+    opacity: 0;
+    scale: 2.1;
+  }
+}
+
+/* timer menegang di 5 detik terakhir */
+.timer-urgent {
+  animation: urgent 0.5s ease-in-out infinite alternate;
+}
+@keyframes urgent {
+  to {
+    opacity: 0.55;
+  }
+}
+
+/* garis perjalanan di layar hasil digambar dari kiri */
+.draw-x {
+  transform-origin: left center;
+  animation: draw-x 1.4s var(--ease-out) 0.2s both;
+}
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* perayaan skor tinggi: daun jatuh sekali */
+.leaf {
+  position: absolute;
+  top: -24px;
+  width: 14px;
+  height: 22px;
+  border-radius: 0 100% 0 100%;
+  animation: leaf-fall var(--dur, 2.6s) var(--delay, 0s) cubic-bezier(0.3, 0.6, 0.5, 1) both;
+}
+@keyframes leaf-fall {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(var(--r0, 0deg));
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx, 40px), 460px) rotate(var(--r1, 280deg));
+  }
+}
+
+/* foto sharing session di papan keberangkatan, silang-pudar */
 .crossfade > * {
-  animation: crossfade 28s infinite;
+  animation: crossfade 24s infinite;
   opacity: 0;
 }
-/* foto juga bergeser pelan saat tampil */
-.crossfade > img {
-  animation:
-    crossfade 28s infinite,
-    drift 28s infinite;
-}
-/* jeda negatif: foto pertama sudah tampil penuh saat halaman dibuka */
 .crossfade > :nth-child(1) {
   animation-delay: -2s;
 }
 .crossfade > :nth-child(2) {
-  animation-delay: 5s;
+  animation-delay: 6s;
 }
 .crossfade > :nth-child(3) {
-  animation-delay: 12s;
-}
-.crossfade > :nth-child(4) {
-  animation-delay: 19s;
+  animation-delay: 14s;
 }
 @keyframes crossfade {
   0% {
     opacity: 0;
   }
   6%,
-  25% {
+  33% {
     opacity: 1;
   }
-  31%,
+  39%,
   100% {
     opacity: 0;
-  }
-}
-@keyframes drift {
-  0% {
-    transform: scale(1.08);
-  }
-  31%,
-  100% {
-    transform: scale(1);
   }
 }
 
@@ -129,41 +235,63 @@ body {
   animation: var(--animate-rise);
   animation-delay: calc(var(--i, 0) * 70ms);
 }
-
-/* Muncul saat digulir ke dalam layar (lihat lib/use-reveal.ts). Tanpa skrip, konten tetap tampil. */
-/* pakai `translate` (bukan transform) supaya efek tekan `scale` dari Tailwind tetap jalan */
-.js .reveal {
-  opacity: 0;
-  translate: 0 24px;
-  transition:
-    opacity 0.6s var(--ease-out),
-    translate 0.6s var(--ease-out),
-    scale 0.2s var(--ease-out),
-    background-color 0.2s;
-}
-.js .reveal.is-in {
-  opacity: 1;
-  translate: none;
+.enter-arrive {
+  animation: var(--animate-arrive);
+  animation-delay: calc(var(--i, 0) * 60ms);
 }
 
+/*
+ * Kurangi gerak: tanpa geser, goyang, atau daun jatuh. Umpan balik tetap terasa
+ * lewat pudar-masuk dan perubahan warna, jadi permainan tidak terasa mati.
+ */
 @media (prefers-reduced-motion: reduce) {
-  .js .reveal {
-    opacity: 1;
-    translate: none;
+  @keyframes rise {
+    from {
+      opacity: 0;
+    }
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-delay: 0s !important;
-    transition-duration: 0.01ms !important;
+  @keyframes arrive {
+    from {
+      opacity: 0;
+    }
   }
-  .crossfade > *,
-  .crossfade > img {
-    animation: none;
-    opacity: 0;
+  @keyframes stamp {
+    from {
+      opacity: 0;
+    }
   }
-  .crossfade > :first-child {
-    opacity: 1;
+  @keyframes shake {
+    from {
+      opacity: 0.6;
+    }
+  }
+  @keyframes float-up {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes tick {
+    from {
+      opacity: 1;
+    }
+  }
+  @keyframes draw-x {
+    from {
+      opacity: 0;
+    }
+  }
+  .train,
+  .rail-fill {
+    transition: none;
+  }
+  .arrival-ping,
+  .leaf {
+    display: none;
   }
 }

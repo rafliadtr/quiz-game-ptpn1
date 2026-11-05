@@ -1,69 +1,39 @@
 "use client";
 
 /**
- * Layar awal. Kiri: kartu formulir. Kanan: foto arsip kebun PTPN (teh, kopi, karet)
- * dengan kartu peserta yang terisi langsung saat nama dan divisi dipilih.
+ * Layar awal "Peta Jalur Divisi". Pemain memilih jalurnya (divisi) dan rute (mode),
+ * papan keberangkatan hijau terisi langsung dari pilihan itu.
  */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Stripe from "@/components/Stripe";
 import { GAME } from "@/lib/game-config";
-import { useReveal } from "@/lib/use-reveal";
+import { LineBadge } from "@/components/Route";
 
 type DivisionOption = { id: number; kode: string; kepanjangan: string };
 type Mode = "own" | "mixed";
 
 const MODES: { value: Mode; label: string; hint: string }[] = [
-  { value: "own", label: "Divisiku saja", hint: "Semua soal tentang divisimu" },
-  { value: "mixed", label: "Campur", hint: "Sebagian soal dari divisi lain" },
+  { value: "own", label: "Jalur divisiku", hint: "Semua soal tentang divisimu" },
+  { value: "mixed", label: "Lintas jalur", hint: "Sebagian soal dari divisi lain" },
 ];
 
-/** Foto arsip, sumber dan lisensi di public/kebun/credits.json */
+/** Foto acara sharing session di Head Office */
 const PHOTOS = [
   {
     src: "/kebun/sharing-session.jpeg",
-    w: 2268,
-    h: 4032,
     alt: "Pemateri memegang mikrofon di depan dinding berlogo PTPN I, peserta duduk mengelilingi meja rapat berbentuk U",
-    caption: "Sharing Session",
   },
   {
     src: "/kebun/sharing-session2.jpeg",
-    w: 2268,
-    h: 4032,
     alt: "Peserta sharing session menyimak pemateri dari meja rapat panjang, dengan laptop dan catatan di depan mereka",
-    caption: "Sharing Session",
   },
   {
     src: "/kebun/sharing-session3.jpeg",
-    w: 2268,
-    h: 4032,
     alt: "Pemateri menulis di flipchart di ruang rapat PTPN I sementara peserta di sisi meja menyimak",
-    caption: "Sharing Session",
-  },
-  {
-    src: "/kebun/teh-garoet.jpg",
-    w: 1840,
-    h: 1500,
-    alt: "Lereng gunung berselimut kebun teh dan rumah administratur",
-    caption: "Kebun teh Waspada, Garut",
   },
 ];
 
-const FACTS = [
-  { value: GAME.QUESTION_COUNT, note: "soal dalam satu sesi" },
-  { value: GAME.TIME_LIMIT_MS / 1000, note: "detik untuk tiap soal" },
-  {
-    value: GAME.BASE_POINTS + GAME.SPEED_BONUS,
-    note: "poin maksimal per soal",
-  },
-];
-
-export default function StartForm({
-  divisions,
-}: {
-  divisions: DivisionOption[] | null;
-}) {
+export default function StartForm({ divisions }: { divisions: DivisionOption[] | null }) {
   const router = useRouter();
   const [nama, setNama] = useState("");
   const [divisionId, setDivisionId] = useState<number | null>(null);
@@ -72,7 +42,6 @@ export default function StartForm({
   const [error, setError] = useState<string | null>(null);
 
   const chosen = divisions?.find((d) => d.id === divisionId) ?? null;
-  useReveal([divisions]);
 
   async function start(e: React.FormEvent) {
     e.preventDefault();
@@ -95,121 +64,63 @@ export default function StartForm({
   }
 
   return (
-    <main className="grid grid-cols-1 gap-3 p-3 lg:grid-cols-2">
-      {/* ---------- foto kebun + kartu peserta ---------- */}
-      <section
-        aria-label="Kartu peserta"
-        className="relative h-[60svh] min-h-105 overflow-hidden bg-black lg:order-2 lg:sticky lg:top-3 lg:h-[calc(100dvh-24px)]"
-      >
-        <div className="crossfade absolute inset-0">
-          {PHOTOS.map((p, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={p.src}
-              src={p.src}
-              width={p.w}
-              height={p.h}
-              alt={p.alt}
-              loading={i === 0 ? "eager" : "lazy"}
-              className="archival absolute inset-0 size-full object-cover"
-            />
-          ))}
+    <div className="min-h-dvh">
+      {/* strip nama layanan */}
+      <header className="sticky top-0 z-20 bg-hijau text-putih">
+        <div className="flex h-14 items-center justify-between gap-4 px-5 sm:px-8">
+          <p className="flex items-center gap-2.5 font-display text-xl font-bold tracking-wide">
+            <RouteGlyph />
+            Kenali Divisimu
+          </p>
+          <p className="text-sm font-medium text-putih/90">PTPN I Head Office</p>
         </div>
+      </header>
 
-        <ParticipantCard nama={nama} division={chosen} mode={mode} />
-
-        <ul
-          aria-hidden
-          className="crossfade absolute right-0 bottom-0 hidden sm:block lg:right-auto lg:left-0"
-        >
-          {PHOTOS.map((p) => (
-            <li
-              key={p.src}
-              className="absolute right-0 bottom-0 bg-ground px-4 py-2.5 text-sm whitespace-nowrap text-white lg:right-auto lg:left-0"
-            >
-              {p.caption}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* ---------- kartu formulir ---------- */}
-      <div className="-mt-9 bg-paper lg:order-1 lg:mt-0">
-        <Stripe />
-        <div className="px-5 pt-8 pb-10 sm:px-12 sm:pt-10 lg:px-10 xl:px-14">
+      <main className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(400px,0.8fr)]">
+        <div className="px-5 pt-8 pb-10 sm:px-10 sm:pt-12 lg:px-12 xl:px-16">
           <h1
-            className="enter mt-2 max-w-[19ch] text-[clamp(2rem,1.2rem+3.1vw,3.75rem)] leading-[0.98] font-semibold tracking-[-0.04em]"
+            className="enter max-w-[16ch] font-display text-[clamp(2.6rem,1.6rem+4vw,4.75rem)] leading-[0.95] font-bold tracking-[-0.01em] text-balance"
             style={{ "--i": 1 } as React.CSSProperties}
           >
             Seberapa kenal kamu dengan divisimu?
           </h1>
-          <p
-            className="enter mt-6 max-w-[46ch] text-lg leading-relaxed"
-            style={{ "--i": 2 } as React.CSSProperties}
-          >
-            Tebak kepanjangan divisi, sub divisi, dan siapa menjabat apa. Makin
-            cepat menjawab, makin besar poinnya. Hati-hati, beberapa soal
-            sengaja menjebak.
+          {/* di HP cukup satu baris aturan, supaya pilihan jalur langsung terlihat */}
+          <p className="enter mt-3 text-lg leading-snug lg:hidden" style={{ "--i": 2 } as React.CSSProperties}>
+            {GAME.QUESTION_COUNT} stasiun, {GAME.TIME_LIMIT_MS / 1000} detik per soal. Makin cepat, makin besar poinnya.
+          </p>
+          <p className="enter mt-5 hidden max-w-[48ch] text-lg leading-relaxed lg:block" style={{ "--i": 2 } as React.CSSProperties}>
+            Satu perjalanan, {GAME.QUESTION_COUNT} stasiun. Di tiap stasiun ada satu soal tentang kepanjangan divisi,
+            sub divisi, atau siapa menjabat apa. Kamu punya {GAME.TIME_LIMIT_MS / 1000} detik, dan makin cepat menjawab,
+            makin besar poinnya (sampai {GAME.BASE_POINTS + GAME.SPEED_BONUS} per soal). Hati-hati, beberapa soal sengaja
+            menjebak.
           </p>
 
-          <dl
-            className="enter mt-10 grid grid-cols-3 gap-4 bg-surface p-5 sm:p-6"
-            style={{ "--i": 3 } as React.CSSProperties}
-          >
-            {FACTS.map((f) => (
-              <div key={f.value}>
-                <dt className="text-[clamp(2rem,1.4rem+1.6vw,2.75rem)] leading-none font-semibold tracking-[-0.04em] tabular-nums">
-                  {f.value}
-                </dt>
-                <dd className="mt-2 text-sm leading-snug text-muted">
-                  {f.note}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          {/* strip rute versi HP */}
+          <div className="enter mt-5 lg:hidden" style={{ "--i": 3 } as React.CSSProperties}>
+            <DepartureBoard nama={nama} division={chosen} mode={mode} compact />
+          </div>
 
           {divisions === null ? (
-            <p className="mt-14 text-lg text-muted">Memuat daftar divisi...</p>
+            <p className="mt-12 text-lg text-redup">Memuat daftar jalur...</p>
           ) : divisions.length === 0 ? (
-            <p className="mt-14 bg-surface p-6 text-lg">
-              Belum ada divisi yang terdaftar. Tambahkan data divisi terlebih
-              dulu, lalu muat ulang halaman ini.
+            <p className="mt-12 rounded-panel bg-abu p-6 text-lg">
+              Belum ada divisi yang terdaftar. Tambahkan data divisi terlebih dulu, lalu muat ulang halaman ini.
             </p>
           ) : (
-            <form onSubmit={start} className="mt-14 space-y-12">
-              <div>
-                <label
-                  htmlFor="nama"
-                  className="block text-xl font-semibold tracking-tight"
-                >
-                  Nama kamu
-                </label>
-                <input
-                  id="nama"
-                  value={nama}
-                  onChange={(e) => setNama(e.target.value)}
-                  maxLength={50}
-                  autoComplete="name"
-                  placeholder="Opsional, tampil di kartu dan papan skor"
-                  className="mt-3 h-14 w-full bg-surface px-4 text-lg outline-none placeholder:text-muted focus-visible:bg-surface-2"
-                />
-              </div>
-
+            <form onSubmit={start} className="mt-8 space-y-11 lg:mt-10">
               <fieldset>
-                <legend className="text-xl font-semibold tracking-tight">
-                  Pilih divisimu
-                </legend>
-                <div className="mt-4 grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-                  {divisions.map((d) => {
+                <legend className="font-display text-2xl font-bold">Pilih jalurmu</legend>
+                <p className="mt-1 text-redup">Setiap divisi adalah satu jalur.</p>
+                <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+                  {divisions.map((d, i) => {
                     const selected = d.id === divisionId;
                     return (
                       <label
                         key={d.id}
-                        className={`reveal group cursor-pointer p-3.5 transition-[background-color,transform] duration-200 active:scale-[0.98] has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
-                          selected
-                            ? "bg-ink text-white"
-                            : "bg-surface hover:bg-surface-2"
+                        className={`enter group flex cursor-pointer flex-col gap-2.5 rounded-panel border-2 p-3 transition-[background-color,border-color,transform] duration-200 active:scale-[0.98] has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-jingga ${
+                          selected ? "border-hijau bg-hijau-muda" : "border-garis bg-putih hover:border-hijau/50"
                         }`}
+                        style={{ "--i": 5 + Math.min(i, 12) * 0.5 } as React.CSSProperties}
                       >
                         <input
                           type="radio"
@@ -219,14 +130,8 @@ export default function StartForm({
                           onChange={() => setDivisionId(d.id)}
                           className="sr-only"
                         />
-                        <span className="block text-lg leading-none font-semibold tracking-[-0.02em]">
-                          {d.kode}
-                        </span>
-                        <span
-                          className={`mt-2 line-clamp-2 text-[13px] leading-snug ${selected ? "text-white/80" : "text-muted"}`}
-                        >
-                          {d.kepanjangan}
-                        </span>
+                        <LineBadge kode={d.kode} size="sm" tone={selected ? "green" : "muted"} className="self-start transition-colors" />
+                        <span className="line-clamp-2 text-sm leading-snug">{d.kepanjangan}</span>
                       </label>
                     );
                   })}
@@ -234,19 +139,15 @@ export default function StartForm({
               </fieldset>
 
               <fieldset>
-                <legend className="text-xl font-semibold tracking-tight">
-                  Jenis soal
-                </legend>
-                <div className="mt-4 grid grid-cols-2 gap-1.5">
+                <legend className="font-display text-2xl font-bold">Rute soal</legend>
+                <div className="mt-4 grid grid-cols-2 gap-2">
                   {MODES.map((m) => {
                     const selected = mode === m.value;
                     return (
                       <label
                         key={m.value}
-                        className={`reveal cursor-pointer p-4 transition-colors duration-200 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
-                          selected
-                            ? "bg-ink text-white"
-                            : "bg-surface hover:bg-surface-2"
+                        className={`cursor-pointer rounded-panel border-2 p-4 transition-colors duration-200 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-jingga ${
+                          selected ? "border-hijau bg-hijau-muda" : "border-garis bg-putih hover:border-hijau/50"
                         }`}
                       >
                         <input
@@ -257,37 +158,45 @@ export default function StartForm({
                           onChange={() => setMode(m.value)}
                           className="sr-only"
                         />
-                        <span className="block text-lg font-semibold">
-                          {m.label}
-                        </span>
-                        <span
-                          className={`mt-1 block text-sm ${selected ? "text-white/80" : "text-muted"}`}
-                        >
-                          {m.hint}
-                        </span>
+                        <span className="block text-lg font-semibold">{m.label}</span>
+                        <span className="mt-1 block text-sm text-redup">{m.hint}</span>
                       </label>
                     );
                   })}
                 </div>
               </fieldset>
 
-              {/* tombol menempel di bawah layar selama formulir terlihat, jadi selalu terjangkau */}
-              <div className="sticky bottom-0 z-10 -mx-5 bg-paper px-5 pt-4 pb-5 sm:-mx-12 sm:px-12 lg:-mx-10 lg:px-10 xl:-mx-14 xl:px-14">
+              <div>
+                <label htmlFor="nama" className="block font-display text-2xl font-bold">
+                  Nama kamu
+                </label>
+                <input
+                  id="nama"
+                  value={nama}
+                  onChange={(e) => setNama(e.target.value)}
+                  maxLength={50}
+                  autoComplete="name"
+                  placeholder="Opsional, tampil di papan keberangkatan"
+                  className="mt-3 h-14 w-full rounded-panel border-2 border-garis bg-abu px-4 text-lg transition-colors outline-none placeholder:text-redup focus-visible:border-hijau focus-visible:bg-putih focus-visible:outline-none"
+                />
+              </div>
+
+              {/* tombol menempel di bawah layar selama formulir terlihat */}
+              <div className="sticky bottom-0 z-10 -mx-5 border-t border-garis bg-putih/95 px-5 pt-4 pb-5 backdrop-blur-sm sm:-mx-10 sm:px-10 lg:-mx-12 lg:px-12 xl:-mx-16 xl:px-16">
                 <button
                   type="submit"
                   disabled={!divisionId || loading}
-                  className="h-16 w-full bg-accent px-8 text-xl font-semibold tracking-tight text-ink transition-[background-color,transform] duration-200 hover:bg-accent-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-muted disabled:active:scale-100"
+                  className="group flex h-16 w-full items-center justify-center gap-3 rounded-panel bg-jingga px-8 font-display text-2xl font-bold tracking-wide text-tinta transition-[background-color,transform] duration-200 hover:bg-jingga-tua active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-abu disabled:text-redup disabled:active:scale-100"
                 >
-                  {loading
-                    ? "Menyiapkan soal..."
-                    : chosen
-                      ? `Mulai main sebagai ${chosen.kode}`
-                      : "Mulai main"}
+                  {loading ? "Menyiapkan soal..." : chosen ? `Berangkat di jalur ${chosen.kode}` : "Berangkat"}
+                  {!loading && (
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden className="size-6 transition-transform duration-300 group-enabled:group-hover:translate-x-1.5">
+                      <path d="M4 10h11m-4.5-5L15 10l-4.5 5" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
                 </button>
-                <p className="mt-3 text-sm text-muted" aria-live="polite">
-                  {!divisionId
-                    ? "Pilih divisimu dulu untuk mulai."
-                    : "Tekan 1 sampai 4 di keyboard untuk menjawab lebih cepat."}
+                <p className="mt-3 text-sm text-redup" aria-live="polite">
+                  {!divisionId ? "Pilih jalurmu dulu untuk berangkat." : "Tekan 1 sampai 4 di keyboard untuk menjawab lebih cepat."}
                 </p>
                 {error && (
                   <p role="alert" className="mt-3 font-medium text-salah">
@@ -297,75 +206,120 @@ export default function StartForm({
               </div>
             </form>
           )}
-
-          <p className="mt-16 text-[13px] leading-relaxed text-muted">
-            Foto kebun teh Waspada, Garut:{" "}
-            <a
-              className="underline underline-offset-2 hover:text-ink"
-              href="https://commons.wikimedia.org/wiki/File:Theeonderneming_Waspada_bij_Garoet,_KITLV_3331.tiff"
-            >
-              Woodbury &amp; Page, KITLV
-            </a>
-            ,{" "}
-            <a
-              className="underline underline-offset-2 hover:text-ink"
-              href="https://creativecommons.org/licenses/by/4.0/"
-            >
-              CC BY 4.0
-            </a>
-            , via Wikimedia Commons.
-          </p>
         </div>
-      </div>
-    </main>
+
+        {/* papan keberangkatan versi desktop */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-14 h-[calc(100dvh-3.5rem)] p-4 pl-0">
+            <DepartureBoard nama={nama} division={chosen} mode={mode} />
+          </div>
+        </aside>
+      </main>
+    </div>
   );
 }
 
-/** Kartu peserta yang terisi seketika dari isian formulir. */
-function ParticipantCard({
+/** Ikon jalur kecil di strip: dua stasiun dihubungkan rel */
+function RouteGlyph() {
+  return (
+    <svg viewBox="0 0 28 14" aria-hidden className="h-3.5 w-7">
+      <rect x="4" y="5" width="20" height="4" rx="2" fill="currentColor" opacity=".55" />
+      <circle cx="5" cy="7" r="4" className="fill-putih" />
+      <circle cx="23" cy="7" r="4" className="fill-jingga" />
+    </svg>
+  );
+}
+
+/** Papan keberangkatan hijau: terisi langsung dari isian formulir. */
+function DepartureBoard({
   nama,
   division,
   mode,
+  compact = false,
 }: {
   nama: string;
   division: DivisionOption | null;
   mode: Mode;
+  compact?: boolean;
 }) {
+  const stations = GAME.QUESTION_COUNT;
   return (
-    <div className="absolute bottom-12 left-1/2 w-[min(300px,calc(100%-40px))] -translate-x-1/2 bg-paper sm:left-8 sm:translate-x-0 lg:right-14 lg:bottom-14 lg:left-auto">
-      <div className="px-6 pt-4 pb-6">
-        {/* lubang tali kartu */}
-        <div
-          aria-hidden
-          className="mx-auto h-2.5 w-14 rounded-full bg-ground"
-        />
-        <p
-          className={`mt-5 truncate text-2xl font-semibold tracking-tight ${nama.trim() ? "" : "text-muted"}`}
-        >
-          {nama.trim() || "Nama kamu"}
+    <section
+      aria-label="Papan keberangkatan"
+      className={`relative flex flex-col overflow-hidden rounded-panel bg-hijau text-putih ${compact ? "" : "h-full"}`}
+    >
+      <div className={compact ? "p-4" : "p-8 xl:p-10"}>
+        <div className="flex items-center gap-4">
+          <LineBadge
+            key={division?.kode ?? "none"}
+            kode={division?.kode ?? "?"}
+            size={compact ? "lg" : "xl"}
+            tone="light"
+            className={division ? "animate-stamp" : "opacity-40"}
+          />
+          <p className={`leading-snug ${compact ? "text-base" : "text-xl"} ${division ? "" : "text-putih/90"}`}>
+            {division ? division.kepanjangan : compact ? "Pilih jalurmu di bawah" : "Pilih jalurmu di formulir"}
+          </p>
+        </div>
+
+        {/* rute 10 stasiun, menyala satu per satu saat jalur dipilih */}
+        <ol key={division?.kode ?? "none"} aria-hidden className={`relative flex items-center justify-between ${compact ? "mt-4" : "mt-10"}`}>
+          <span className="absolute inset-x-2 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-putih/25" />
+          {division && <span className="draw-x absolute inset-x-2 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-putih" />}
+          {Array.from({ length: stations }, (_, i) => {
+            const last = i === stations - 1;
+            return (
+              <li
+                key={i}
+                className={`relative rounded-full ${compact ? "size-4 border-[3px]" : "size-6 border-4"} ${
+                  division ? "animate-stamp" : ""
+                } ${last && division ? "border-jingga bg-jingga" : division ? "border-putih bg-hijau" : "border-putih/35 bg-hijau"}`}
+                style={division ? { animationDelay: `${200 + i * 90}ms` } : undefined}
+              />
+            );
+          })}
+        </ol>
+        <p className={`flex justify-between text-sm text-putih/90 ${compact ? "mt-2" : "mt-3"}`}>
+          <span>Berangkat</span>
+          <span>Stasiun {stations}: skor akhir</span>
         </p>
-        <p
-          key={division?.kode ?? "none"}
-          className={`mt-6 animate-pop text-[clamp(3rem,2.4rem+2vw,4.25rem)] leading-none font-bold tracking-[-0.05em] ${
-            division ? "" : "text-surface-2"
-          }`}
-        >
-          {division?.kode ?? "DIVISI"}
-        </p>
-        <p className="mt-3 min-h-[2.75em] text-[15px] leading-snug">
-          {division?.kepanjangan ?? (
-            <span className="text-muted">Pilih divisimu di formulir</span>
-          )}
-        </p>
-        <p className="mt-4 bg-surface px-3 py-2 text-sm">
-          {mode === "own" ? "Soal divisi sendiri" : "Soal campur divisi lain"}
-        </p>
-        <p className="mt-5 flex items-baseline justify-between gap-3 text-sm">
-          <span className="font-semibold">Kenali Divisimu</span>
-          <span className="text-muted">PTPN I Head Office</span>
-        </p>
+
+        <dl className={`mt-10 grid-cols-2 gap-x-6 gap-y-4 border-t border-putih/20 pt-8 ${compact ? "hidden" : "grid"}`}>
+          <div className="min-w-0">
+            <dt className="text-sm text-putih/90">Penumpang</dt>
+            <dd className={`mt-0.5 truncate font-display font-bold ${compact ? "text-xl" : "text-3xl"}`}>
+              {nama.trim() || "Tanpa nama"}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-sm text-putih/90">Rute</dt>
+            <dd className={`mt-0.5 font-display font-bold ${compact ? "text-xl" : "text-3xl"}`}>
+              {mode === "own" ? "Jalur divisiku" : "Lintas jalur"}
+            </dd>
+          </div>
+        </dl>
       </div>
-      <Stripe height={14} bars={16} />
-    </div>
+
+      {/* poster foto acara di peron */}
+      {!compact && (
+        <figure className="relative mx-8 mb-8 min-h-0 flex-1 overflow-hidden rounded-panel bg-hijau-tua xl:mx-10 xl:mb-10">
+          <div className="crossfade absolute inset-0">
+            {PHOTOS.map((p, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={p.src}
+                src={p.src}
+                alt={p.alt}
+                loading={i === 0 ? "eager" : "lazy"}
+                className="absolute inset-0 size-full object-cover object-[50%_45%]"
+              />
+            ))}
+          </div>
+          <figcaption className="absolute bottom-0 left-0 rounded-tr-panel bg-hijau px-4 py-2 text-sm font-medium">
+            Sharing Session, Head Office PTPN I
+          </figcaption>
+        </figure>
+      )}
+    </section>
   );
 }

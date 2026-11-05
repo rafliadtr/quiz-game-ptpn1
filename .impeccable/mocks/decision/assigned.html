@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--putih:#fff;--abu:#F3F5F1;--hijau:#1E7B3C;--jingga:#F39321;--tinta:#2E1B19;--salah:#C9372C}
+*{box-sizing:border-box;margin:0}
+body{width:390px;height:844px;background:var(--putih);color:var(--tinta);font-family:Barlow,sans-serif;overflow:hidden}
+.band{background:var(--hijau);color:#fff;padding:14px 16px 12px;display:flex;align-items:center;gap:12px}
+.badge{background:#fff;color:var(--hijau);font:700 22px/1 'Barlow Condensed';padding:6px 10px;border-radius:6px}
+.band p{font:600 15px/1.2 Barlow}
+.band .skor{margin-left:auto;font:700 28px/1 'Barlow Condensed'}
+.route{position:relative;padding:22px 20px 8px;background:var(--abu)}
+.line{position:absolute;left:28px;right:28px;top:34px;height:8px;background:var(--hijau);border-radius:4px}
+.stops{position:relative;display:flex;justify-content:space-between}
+.stop{width:24px;height:24px;border-radius:50%;background:#fff;border:5px solid var(--hijau);display:grid;place-items:center;font:700 10px Barlow}
+.stop.ok{background:var(--hijau);color:#fff}
+.stop.no{border-color:var(--salah);color:var(--salah)}
+.stop.now{width:32px;height:32px;margin-top:-4px;background:var(--jingga);border-color:var(--jingga);box-shadow:0 0 0 5px #fff}
+.timer{margin:10px 0 0;height:6px;background:#dfe5dc;border-radius:3px}
+.timer i{display:block;width:62%;height:100%;background:var(--jingga);border-radius:3px}
+.meta{display:flex;justify-content:space-between;padding:6px 0 4px;font:600 13px Barlow;color:#5a5250}
+.board{margin:18px 16px 0;background:var(--hijau);color:#fff;border-radius:10px;padding:18px 18px 20px}
+.board small{font:600 13px Barlow;opacity:.85}
+.board h1{margin-top:8px;font:700 30px/1.08 'Barlow Condensed'}
+.doors{margin:14px 16px 0;display:grid;gap:8px}
+.door{display:flex;align-items:center;gap:12px;border:2px solid #d9ded6;border-radius:10px;padding:12px;font:600 17px/1.25 Barlow;background:#fff}
+.door b{flex:none;width:34px;height:34px;border-radius:50%;background:var(--tinta);color:#fff;display:grid;place-items:center;font:700 16px Barlow}
+</style></head><body>
+<div class="band"><span class="badge">DPSB</span><p>Jalur Divisi Pengembangan SDM</p><span class="skor">420</span></div>
+<div class="route">
+ <div class="line"></div>
+ <div class="stops"><span class="stop ok">1</span><span class="stop ok">2</span><span class="stop no">3</span><span class="stop ok">4</span><span class="stop now"></span><span class="stop"></span><span class="stop"></span><span class="stop"></span><span class="stop"></span><span class="stop"></span></div>
+ <div class="timer"><i></i></div>
+ <div class="meta"><span>Stasiun 5 dari 10</span><span>9 detik</span></div>
+</div>
+<div class="board"><small>Siapa yang menjabat</small><h1>Kepala Sub Divisi Manajemen Talenta dan Perencanaan Tenaga Kerja?</h1></div>
+<div class="doors">
+ <div class="door"><b>A</b>Teuku Novika Yunanda</div>
+ <div class="door"><b>B</b>Yunanto Nurhascaryo</div>
+ <div class="door"><b>C</b>Farhan</div>
+ <div class="door"><b>D</b>Henny Mailena Siregar</div>
+</div>
+</body></html>

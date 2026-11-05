@@ -1,0 +1,453 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T13:35:48.613Z",
+  "title": "Design System: Kenali Divisimu",
+  "extensions": {
+    "colorMeta": {
+      "putih": {
+        "role": "neutral",
+        "displayName": "Signage White",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "abu": {
+        "role": "neutral",
+        "displayName": "Platform Grey",
+        "canonical": "#f3f5f1",
+        "oklch": "oklch(96.8% 0.006 128.5)",
+        "tonalRamp": [
+          "#0a0c09",
+          "#232522",
+          "#3f403d",
+          "#5d5e5b",
+          "#7f817d",
+          "#a3a5a1",
+          "#c9cbc7",
+          "#edefeb"
+        ]
+      },
+      "garis": {
+        "role": "neutral",
+        "displayName": "Door Frame",
+        "canonical": "#dce3d9",
+        "oklch": "oklch(90.8% 0.015 136.1)",
+        "tonalRamp": [
+          "#080d07",
+          "#21261e",
+          "#3c423a",
+          "#5a6057",
+          "#7c8279",
+          "#a0a79d",
+          "#c6cdc3",
+          "#eaf1e7"
+        ]
+      },
+      "hijau": {
+        "role": "primary",
+        "displayName": "PTPN Line Green",
+        "canonical": "#1e7b3c",
+        "oklch": "oklch(51.5% 0.129 149.6)",
+        "tonalRamp": [
+          "#001600",
+          "#003200",
+          "#005112",
+          "#0c7132",
+          "#3d9554",
+          "#64bb78",
+          "#8be29d",
+          "#afffc0"
+        ],
+        "note": "Sampled from the PTPN I logo wall in event photos; not yet confirmed against an official brand guideline."
+      },
+      "hijau-tua": {
+        "role": "primary",
+        "displayName": "Deep Line Green",
+        "canonical": "#145a2b",
+        "oklch": "oklch(41.3% 0.102 149.8)",
+        "tonalRamp": [
+          "#001400",
+          "#003002",
+          "#004e1f",
+          "#2b6d3d",
+          "#50915f",
+          "#74b782",
+          "#9adea7",
+          "#bdffca"
+        ]
+      },
+      "hijau-muda": {
+        "role": "primary",
+        "displayName": "Pale Line Green",
+        "canonical": "#e3f0e6",
+        "oklch": "oklch(94.3% 0.019 152.8)",
+        "tonalRamp": [
+          "#050e07",
+          "#1d2720",
+          "#38433b",
+          "#566158",
+          "#78847b",
+          "#9ca89f",
+          "#c2cec5",
+          "#e5f2e8"
+        ]
+      },
+      "jingga": {
+        "role": "secondary",
+        "displayName": "PTPN Signal Orange",
+        "canonical": "#f39321",
+        "oklch": "oklch(74.8% 0.161 63.2)",
+        "tonalRamp": [
+          "#300000",
+          "#530000",
+          "#761d00",
+          "#994000",
+          "#c16500",
+          "#e98a0d",
+          "#ffb14a",
+          "#ffd571"
+        ],
+        "note": "Sampled from the PTPN I logo wall in event photos; not yet confirmed against an official brand guideline."
+      },
+      "jingga-tua": {
+        "role": "secondary",
+        "displayName": "Pressed Orange",
+        "canonical": "#d97a08",
+        "oklch": "oklch(67.1% 0.156 59.9)",
+        "tonalRamp": [
+          "#300000",
+          "#530000",
+          "#761c00",
+          "#993f00",
+          "#c16400",
+          "#ea8928",
+          "#ffb056",
+          "#ffd47c"
+        ]
+      },
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Wordmark Maroon",
+        "canonical": "#2e1b19",
+        "oklch": "oklch(24.6% 0.031 26.1)",
+        "tonalRamp": [
+          "#160605",
+          "#311e1c",
+          "#4f3a37",
+          "#6e5755",
+          "#927a77",
+          "#b79e9b",
+          "#dec3c0",
+          "#ffe7e4"
+        ]
+      },
+      "redup": {
+        "role": "neutral",
+        "displayName": "Muted Maroon",
+        "canonical": "#675d5a",
+        "oklch": "oklch(48.7% 0.014 37.4)",
+        "tonalRamp": [
+          "#100907",
+          "#2a221f",
+          "#473d3b",
+          "#655b58",
+          "#887e7a",
+          "#ada29e",
+          "#d3c8c4",
+          "#f7ece8"
+        ]
+      },
+      "salah": {
+        "role": "tertiary",
+        "displayName": "Wrong-Station Red",
+        "canonical": "#c9372c",
+        "oklch": "oklch(55.7% 0.185 28.8)",
+        "tonalRamp": [
+          "#240000",
+          "#620000",
+          "#880000",
+          "#ae1611",
+          "#d84639",
+          "#ff6e5e",
+          "#ff9683",
+          "#ffdbd0"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Final score on the results board only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Start-screen title."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Question on the station board; results verdict."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Legends, section headings, review prompts."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Rules copy and explanations, max 62ch."
+      },
+      "option": {
+        "displayName": "Option",
+        "purpose": "Answer-door and mode labels."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Counters, captions, hints."
+      }
+    },
+    "shadows": [
+      {
+        "name": "train-marker",
+        "value": "0 1px 4px rgba(46,27,25,0.35)",
+        "purpose": "Only on the orange position dot sitting on the rail."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Shared easing for all world motion."
+      },
+      {
+        "name": "rise",
+        "value": "0.6s; translateY(20px) to 0; stagger 70ms per --i",
+        "purpose": "Content entrance."
+      },
+      {
+        "name": "arrive",
+        "value": "0.55s; translateX(48px) to 0; stagger 60ms",
+        "purpose": "Station board and doors pulling in like a train."
+      },
+      {
+        "name": "stamp",
+        "value": "0.45s; scale 0.4 to 1.18 to 1",
+        "purpose": "Station stamps, score change, badge selection, correct key."
+      },
+      {
+        "name": "shake",
+        "value": "0.42s ease-in-out; ±9px decaying",
+        "purpose": "Wrong pick."
+      },
+      {
+        "name": "float-up",
+        "value": "1.1s; rise 56px and fade",
+        "purpose": "+points pop."
+      },
+      {
+        "name": "tick",
+        "value": "1s infinite; scale 1.14 at 12%",
+        "purpose": "Seconds count in the last 5 s."
+      },
+      {
+        "name": "urgent",
+        "value": "0.5s alternate; opacity to 0.55",
+        "purpose": "Timer bar in the last 5 s."
+      },
+      {
+        "name": "train-glide",
+        "value": "left 0.7s ease-out; rail fill scaleX 0.7s",
+        "purpose": "Marker moving to the next station."
+      },
+      {
+        "name": "arrival-ping",
+        "value": "0.9s after 0.55s; ring scale 0.8 to 2.1, once",
+        "purpose": "Single pulse when the train arrives."
+      },
+      {
+        "name": "draw-x",
+        "value": "1.4s after 0.2s; scaleX 0 to 1; stamps every 140ms",
+        "purpose": "Results route redraw (departure board stamps every 90ms)."
+      },
+      {
+        "name": "leaf-fall",
+        "value": "2.6–4.4s staggered, once",
+        "purpose": "High-score celebration (>= 70% correct)."
+      },
+      {
+        "name": "crossfade",
+        "value": "24s loop, three photos",
+        "purpose": "Departure-board event photos."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: keyframes collapse to opacity; ping and leaves hidden; glide transitions off",
+        "purpose": "Feedback remains through fades, colour and the score count-up."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ],
+    "openItems": [
+      "PTPN green (#1e7b3c) and orange (#f39321) were sampled from the logo wall in event photos; confirm against the official PTPN I brand guideline.",
+      "Official PTPN I logo files are not in the repo; the service strip shows a route glyph and wordmark text until they are supplied."
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one orange action per screen: Berangkat, Main lagi.",
+      "html": "<button class=\"ds-btn-primary\">Berangkat <svg viewBox=\"0 0 20 20\" fill=\"none\" aria-hidden=\"true\" class=\"ds-arrow\"><path d=\"M4 10h11m-4.5-5L15 10l-4.5 5\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 12px; height: 64px; padding: 0 32px; border: none; border-radius: 10px; background: var(--color-jingga, #f39321); color: var(--color-tinta, #2e1b19); font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.025em; cursor: pointer; transition: background-color 200ms, transform 200ms; } .ds-btn-primary .ds-arrow { width: 24px; height: 24px; transition: transform 300ms; } .ds-btn-primary:hover { background: var(--color-jingga-tua, #d97a08); } .ds-btn-primary:hover .ds-arrow { transform: translateX(6px); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 3px solid var(--color-jingga, #f39321); outline-offset: 3px; } .ds-btn-primary:disabled { background: var(--color-abu, #f3f5f1); color: var(--color-redup, #675d5a); cursor: not-allowed; transform: none; }"
+    },
+    {
+      "name": "Answer Door",
+      "kind": "button",
+      "refersTo": "answer-door",
+      "description": "One of four framed white answer doors under the station board.",
+      "html": "<button class=\"ds-door\"><span class=\"ds-door-key\">A</span><span>Divestasi Aset I</span></button>",
+      "css": ".ds-door { display: flex; align-items: center; gap: 16px; width: 100%; min-height: 64px; padding: 12px 16px; text-align: left; border: 2px solid var(--color-garis, #dce3d9); border-radius: 10px; background: var(--color-putih, #fff); color: var(--color-tinta, #2e1b19); font-family: var(--font-sans, Barlow, sans-serif); font-size: 1.125rem; font-weight: 600; line-height: 1.375; cursor: pointer; transition: background-color 200ms, border-color 200ms, opacity 200ms; } .ds-door:hover { border-color: var(--color-hijau, #1e7b3c); background: var(--color-hijau-muda, #e3f0e6); } .ds-door:active { transform: scale(0.98); } .ds-door:focus-visible { outline: 3px solid var(--color-jingga, #f39321); outline-offset: 3px; } .ds-door-key { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border-radius: 9999px; background: var(--color-tinta, #2e1b19); color: var(--color-putih, #fff); font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 1.25rem; }"
+    },
+    {
+      "name": "Answer Door (correct / wrong)",
+      "kind": "button",
+      "refersTo": "answer-door-correct",
+      "description": "Feedback states: green with check and +points pop, red with cross and shake.",
+      "html": "<div class=\"ds-doors\"><button class=\"ds-door-ok\" disabled><span class=\"ds-door-key\"><svg viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\" class=\"ds-ico\"><path d=\"M3 8.5l3.2 3L13 4.5\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span><span>Divestasi Aset I</span><span class=\"ds-pop\">+134</span></button><button class=\"ds-door-no\" disabled><span class=\"ds-door-key\"><svg viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\" class=\"ds-ico\"><path d=\"M4 4l8 8M12 4l-8 8\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\"/></svg></span><span>Manajemen Talenta</span></button></div>",
+      "css": ".ds-doors { display: grid; gap: 8px; } .ds-door-ok, .ds-door-no { position: relative; display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 12px 16px; text-align: left; border-radius: 10px; color: var(--color-putih, #fff); font-family: var(--font-sans, Barlow, sans-serif); font-size: 1.125rem; font-weight: 600; } .ds-door-ok { border: 2px solid var(--color-hijau, #1e7b3c); background: var(--color-hijau, #1e7b3c); } .ds-door-no { border: 2px solid var(--color-salah, #c9372c); background: var(--color-salah, #c9372c); } .ds-door-key { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border-radius: 9999px; background: var(--color-putih, #fff); } .ds-door-ok .ds-door-key { color: var(--color-hijau, #1e7b3c); } .ds-door-no .ds-door-key { color: var(--color-salah, #c9372c); } .ds-ico { width: 20px; height: 20px; } .ds-pop { position: absolute; right: 12px; top: 50%; margin-top: -16px; padding: 4px 10px; border-radius: 9999px; background: var(--color-jingga, #f39321); color: var(--color-tinta, #2e1b19); font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 1.125rem; }"
+    },
+    {
+      "name": "Choice Tile",
+      "kind": "chip",
+      "refersTo": "choice-tile",
+      "description": "Division picker tile with a line badge; selected state turns pale green.",
+      "html": "<div class=\"ds-tiles\"><label class=\"ds-tile\"><span class=\"ds-badge ds-badge-muted\">DMAT</span><span>Divisi Manajemen Aset</span></label><label class=\"ds-tile ds-tile-on\"><span class=\"ds-badge ds-badge-green\">DPSB</span><span>Divisi Pengembangan SDM dan Budaya Perusahaan</span></label></div>",
+      "css": ".ds-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .ds-tile { display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 2px solid var(--color-garis, #dce3d9); border-radius: 10px; background: var(--color-putih, #fff); color: var(--color-tinta, #2e1b19); font-family: var(--font-sans, Barlow, sans-serif); font-size: 0.875rem; line-height: 1.375; cursor: pointer; transition: background-color 200ms, border-color 200ms; } .ds-tile:hover { border-color: rgb(30 123 60 / 0.5); } .ds-tile:focus-within { outline: 3px solid var(--color-jingga, #f39321); outline-offset: 2px; } .ds-tile-on, .ds-tile-on:hover { border-color: var(--color-hijau, #1e7b3c); background: var(--color-hijau-muda, #e3f0e6); } .ds-badge { display: inline-flex; align-self: flex-start; align-items: center; justify-content: center; height: 28px; min-width: 48px; padding: 0 8px; border-radius: 6px; font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 1rem; letter-spacing: 0.025em; line-height: 1; } .ds-badge-muted { background: var(--color-abu, #f3f5f1); color: var(--color-redup, #675d5a); } .ds-badge-green { background: var(--color-hijau, #1e7b3c); color: var(--color-putih, #fff); }"
+    },
+    {
+      "name": "Name Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Optional player name; grey at rest, white with green border on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"Opsional, tampil di papan keberangkatan\">",
+      "css": ".ds-input { width: 100%; height: 56px; padding: 0 16px; border: 2px solid var(--color-garis, #dce3d9); border-radius: 10px; background: var(--color-abu, #f3f5f1); color: var(--color-tinta, #2e1b19); caret-color: var(--color-hijau, #1e7b3c); font-family: var(--font-sans, Barlow, sans-serif); font-size: 1.125rem; outline: none; transition: border-color 150ms, background-color 150ms; } .ds-input::placeholder { color: var(--color-redup, #675d5a); } .ds-input:focus-visible { border-color: var(--color-hijau, #1e7b3c); background: var(--color-putih, #fff); }"
+    },
+    {
+      "name": "Service Strip",
+      "kind": "nav",
+      "refersTo": "service-strip",
+      "description": "Green strip with line badge, division name and score.",
+      "html": "<header class=\"ds-strip\"><span class=\"ds-strip-badge\">DPSB</span><span class=\"ds-strip-name\">Divisi Pengembangan SDM dan Budaya Perusahaan</span><span class=\"ds-strip-score\">134<small>poin</small></span></header>",
+      "css": ".ds-strip { display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 16px; background: var(--color-hijau, #1e7b3c); color: var(--color-putih, #fff); } .ds-strip-badge { display: inline-flex; align-items: center; justify-content: center; height: 36px; min-width: 56px; padding: 0 10px; border-radius: 8px; background: var(--color-putih, #fff); color: var(--color-hijau, #1e7b3c); font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.025em; line-height: 1; } .ds-strip-name { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: var(--font-sans, Barlow, sans-serif); font-size: 15px; font-weight: 500; color: rgb(255 255 255 / 0.9); } .ds-strip-score { font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; } .ds-strip-score small { margin-left: 4px; font-family: var(--font-sans, Barlow, sans-serif); font-size: 0.875rem; font-weight: 400; }"
+    },
+    {
+      "name": "Route Map",
+      "kind": "custom",
+      "refersTo": "route-panel",
+      "description": "Signature: stations on a green rail, stamped stops, orange train marker.",
+      "html": "<div class=\"ds-route\"><div class=\"ds-rail\"></div><div class=\"ds-rail-fill\"></div><ol class=\"ds-stops\"><li class=\"ds-stop ds-ok\"><svg viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\" class=\"ds-ico\"><path d=\"M3 8.5l3.2 3L13 4.5\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></li><li class=\"ds-stop ds-no\"><svg viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\" class=\"ds-ico\"><path d=\"M4 4l8 8M12 4l-8 8\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\"/></svg></li><li class=\"ds-stop\"><span class=\"ds-train\"></span></li><li class=\"ds-stop\">4</li><li class=\"ds-stop\">5</li><li class=\"ds-stop\">6</li></ol></div>",
+      "css": ".ds-route { position: relative; padding: 16px 14px; background: var(--color-abu, #f3f5f1); border-radius: 10px; } .ds-rail, .ds-rail-fill { position: absolute; left: 28px; right: 28px; top: 50%; height: 6px; margin-top: -3px; border-radius: 9999px; } .ds-rail { background: rgb(30 123 60 / 0.25); } .ds-rail-fill { right: auto; width: 32%; background: var(--color-hijau, #1e7b3c); } .ds-stops { position: relative; display: flex; justify-content: space-between; margin: 0; padding: 0; list-style: none; } .ds-stop { position: relative; display: grid; place-items: center; width: 28px; height: 28px; box-sizing: border-box; border: 3px solid var(--color-hijau, #1e7b3c); border-radius: 9999px; background: var(--color-putih, #fff); color: var(--color-hijau, #1e7b3c); font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 12px; line-height: 1; } .ds-ok { background: var(--color-hijau, #1e7b3c); color: var(--color-putih, #fff); } .ds-no { border-color: var(--color-salah, #c9372c); color: var(--color-salah, #c9372c); } .ds-stop .ds-ico { width: 14px; height: 14px; } .ds-train { width: 16px; height: 16px; border-radius: 9999px; background: var(--color-jingga, #f39321); box-shadow: 0 1px 4px rgba(46,27,25,0.35); }"
+    },
+    {
+      "name": "Station Board",
+      "kind": "card",
+      "refersTo": "station-board",
+      "description": "Green enamel board carrying the question in condensed type.",
+      "html": "<section class=\"ds-board\"><h2>Manakah yang BUKAN sub divisi dari DPSB?</h2></section>",
+      "css": ".ds-board { padding: 20px; border-radius: 10px; background: var(--color-hijau, #1e7b3c); color: var(--color-putih, #fff); } .ds-board h2 { margin: 0; max-width: 30ch; font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.6rem); line-height: 1.08; text-wrap: balance; }"
+    },
+    {
+      "name": "Timer",
+      "kind": "custom",
+      "refersTo": "route-panel",
+      "description": "Orange bar shrinking over 15 s with a condensed seconds count.",
+      "html": "<div class=\"ds-timer\"><div class=\"ds-track\"><div class=\"ds-fill\"></div></div><p><b>9</b> detik</p></div>",
+      "css": ".ds-timer { display: flex; align-items: center; gap: 12px; } .ds-track { flex: 1; height: 10px; overflow: hidden; border-radius: 9999px; background: var(--color-garis, #dce3d9); } .ds-fill { height: 100%; width: 60%; border-radius: 9999px; background: var(--color-jingga, #f39321); } .ds-timer p { margin: 0; width: 80px; text-align: right; color: var(--color-redup, #675d5a); font-family: var(--font-sans, Barlow, sans-serif); font-size: 0.875rem; } .ds-timer b { color: var(--color-tinta, #2e1b19); font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-weight: 700; font-size: 1.875rem; font-variant-numeric: tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Peta Jalur Divisi",
+    "overview": "Every session is a train journey along the player's own green line: ten questions are ten stations, the player's position is an orange marker, and every answered station gets a stamp. The interface reads like station signage. Enamel-cornered green boards carry the questions, a white ground carries everything else, and the route map is always in sight so progress is never abstract.\n\nThe world is bright, signage-flat and legible at arm's length in a noisy room. Density is low on purpose: one board, four doors, one map. Motion is the train's motion. Boards slide in from the right like a carriage pulling in, the marker glides to the next stop and pings once, stamps scale in and settle, and the results screen redraws the whole route station by station. The world rejects the multicoloured tile grid of stock quiz apps and the paper card floating on a navy background.\n\nThe PTPN I identity drives the palette. The colours were sampled from the logo wall in the event photos and still need checking against an official guideline. The official logo files are not in the repo yet, so the service strip carries a route glyph and the product name until they arrive.",
+    "keyCharacteristics": [
+      "White ground, green line and boards, orange only for \"you, now, go\".",
+      "Barlow Condensed for station names, codes and numbers; Barlow for running text.",
+      "10px enamel-panel corners on every board, door, tile, input and button; circles for stations and answer keys.",
+      "Flat surfaces. Depth comes from tonal layering, not shadows.",
+      "Status is always icon plus colour: filled dot with a check for correct, red ring with a cross for wrong.",
+      "Motion follows the train metaphor and degrades to fades under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The 60-30-10 Rule",
+        "body": "Binding, pinned by the user: about 60% white and neutral ground, 30% PTPN green, 10% PTPN orange on every screen. If orange starts to look like a theme colour, it is over budget.",
+        "section": "colors"
+      },
+      {
+        "name": "The Orange Means You Rule",
+        "body": "Orange marks only the player and the player's next move: position, time left, the primary action and points just earned. It is never used for headings or borders, and its only decorative use is the high-score falling leaves.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Blue Rule",
+        "body": "The blue in the PTPN I logo appears only inside the logo itself. It is never used in the UI.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Signals Rule",
+        "body": "Correct and wrong are never shown by colour alone. Every status carries a check or a cross icon as well.",
+        "section": "colors"
+      },
+      {
+        "name": "The Condensed Speaks Numbers Rule",
+        "body": "Division codes, scores, seconds, station numbers and answer keys use Barlow Condensed bold. Changing numbers (score, timer) are also tabular.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sign Never Shouts Rule",
+        "body": "No uppercase transforms and no wide-tracked labels. Hierarchy comes from the condensed face and size alone. Badges use `tracking-wide` only on division codes.",
+        "section": "typography"
+      },
+      {
+        "name": "The Enamel Is Flat Rule",
+        "body": "Panels, boards, doors and buttons have no shadows. The only exceptions are the train marker above and the sticky submit bar (white at 95% with a light backdrop blur and a door-frame top border).",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the 60-30-10 ratio: a white ground, green for the line and boards, orange for the player only.",
+      "Do put question and score content on green enamel boards with white text, and everything interactive on white or grey with a 2px door-frame border.",
+      "Do pair every correct/wrong colour with a check or cross icon and screen-reader text.",
+      "Do use the shared ease (`cubic-bezier(0.22, 1, 0.36, 1)`) and the train vocabulary: arrive from the right, stamp, glide and ping, draw the rail.",
+      "Do keep feedback alive under reduced motion: remove translation, shaking, leaves and pings, but keep the fades, colour changes and the score count-up.",
+      "Do keep secondary text on green at 90% white or stronger."
+    ],
+    "donts": [
+      "Don't use the PTPN logo blue anywhere in the UI.",
+      "Don't use orange for headings, borders or panel backgrounds. Its only use outside the player signals is one leaf in three in the high-score celebration.",
+      "Don't build a multicoloured tile grid for answers or float paper cards on a navy background.",
+      "Don't add shadows to panels, boards, doors or buttons.",
+      "Don't recreate or approximate the PTPN I logo. Leave the space for the official file.",
+      "Don't signal correct or wrong with colour alone."
+    ]
+  }
+}

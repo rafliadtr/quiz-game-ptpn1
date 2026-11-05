@@ -54,7 +54,8 @@ The questions are generated from the company's own org data (divisions, sub-divi
 ## Evidence on Hand
 
 - `public/kebun/sharing-session.jpeg`, `sharing-session2.jpeg`, `sharing-session3.jpeg`: real photos from a PTPN I sharing session, portrait, 2268×4032. They show a speaker in front of the PTPN I logo wall and staff around U-shaped meeting tables.
-- `public/kebun/teh-garoet.jpg`, `teh-java.jpg`, `kopi-java.jpg`, `karet-java.jpg`: historical plantation photos from Wikimedia Commons, with licences in `public/kebun/credits.json`. `teh-garoet.jpg` is CC BY 4.0 and must be credited wherever it appears. Only `teh-garoet.jpg` is currently on the start screen.
+- `public/kebun/teh-garoet.jpg`, `teh-java.jpg`, `kopi-java.jpg`, `karet-java.jpg`: historical plantation photos from Wikimedia Commons, with licences in `public/kebun/credits.json`. None are shown in the current UI. `teh-garoet.jpg` is CC BY 4.0 and must be credited if it is used again.
+- PTPN I logo colours were sampled from the logo wall in the event photos (green, orange, blue leaves; dark maroon wordmark). They have not been checked against an official brand guideline.
 - The org structure itself, in the seed.
 - There are no testimonials, participation numbers or scores to quote yet. Don't invent any.
 

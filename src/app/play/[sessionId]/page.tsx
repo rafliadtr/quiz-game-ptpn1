@@ -7,6 +7,7 @@
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { CheckIcon, CrossIcon, LineBadge, RouteMap } from "@/components/Route";
 
 type PublicQuestion = { no: number; type: string; prompt: string; options: string[] };
 
@@ -34,19 +35,23 @@ type Feedback = {
 };
 
 const LETTERS = ["A", "B", "C", "D"];
+const URGENT_MS = 5_000;
 
 // useParams butuh batas Suspense agar halaman bisa di-prerender saat build
 export default function PlayPage() {
   return (
-    <Suspense
-      fallback={
-        <Shell>
-          <div className="bg-paper p-8 text-lg text-muted sm:p-12">Memuat soal...</div>
-        </Shell>
-      }
-    >
+    <Suspense fallback={<Loading />}>
       <PlayGame />
     </Suspense>
+  );
+}
+
+function Loading() {
+  return (
+    <main className="min-h-dvh">
+      <div className="h-14 bg-hijau" />
+      <p className="px-5 pt-10 text-lg text-redup sm:px-8">Kereta sedang disiapkan...</p>
+    </main>
   );
 }
 
@@ -149,145 +154,160 @@ function PlayGame() {
 
   if (error) {
     return (
-      <Shell>
-        <div className="bg-paper p-8 sm:p-12">
-          <h1 className="text-3xl font-semibold tracking-tight">Ada yang tidak beres</h1>
+      <main className="min-h-dvh">
+        <div className="h-14 bg-hijau" />
+        <div className="mx-auto max-w-[880px] px-5 pt-10 sm:px-8">
+          <h1 className="font-display text-4xl font-bold">Perjalanan terhenti</h1>
           <p role="alert" className="mt-3 text-lg text-salah">
             {error}
           </p>
           <Link
             href="/"
-            className="mt-8 inline-flex h-14 items-center bg-accent px-8 text-lg font-semibold text-ink transition-colors hover:bg-accent-deep"
+            className="mt-8 inline-flex h-14 items-center rounded-panel bg-jingga px-8 font-display text-xl font-bold text-tinta transition-colors hover:bg-jingga-tua"
           >
             Kembali ke awal
           </Link>
         </div>
-      </Shell>
+      </main>
     );
   }
 
-  if (!game) {
-    return (
-      <Shell>
-        <div className="bg-paper p-8 text-lg text-muted sm:p-12">Memuat soal...</div>
-      </Shell>
-    );
-  }
+  if (!game) return <Loading />;
 
   const q = game.questions[index];
   const ratio = feedback ? 0 : remaining / game.timeLimitMs;
   const seconds = Math.ceil(remaining / 1000);
-  const urgent = !feedback && ratio < 0.3;
+  const urgent = !feedback && remaining > 0 && remaining <= URGENT_MS;
 
   return (
-    <Shell
-      bar={
-        <>
-          <p className="text-white">
-            <span className="font-semibold">Kenali Divisimu</span>
-            <span className="text-white/70"> · {game.division.kode}</span>
+    <main className="min-h-dvh pb-12">
+      {/* strip nama jalur */}
+      <header className="sticky top-0 z-30 bg-hijau text-putih">
+        <div className="mx-auto flex h-16 max-w-[880px] items-center gap-3 px-4 sm:px-8">
+          <LineBadge kode={game.division.kode} />
+          <p className="min-w-0 flex-1 truncate text-[15px] leading-tight font-medium text-putih/90">
+            {game.division.kepanjangan}
           </p>
-          <p className="text-white">
-            <span key={skor} className="inline-block animate-pop text-3xl font-semibold tracking-tight tabular-nums">
+          <p className="shrink-0 text-right leading-none">
+            <span key={skor} className="inline-block min-w-[3ch] origin-right animate-stamp font-display text-[2rem] font-bold tabular-nums">
               {skor}
-            </span>{" "}
-            <span className="text-white/70">poin</span>
+            </span>
+            <span className="ml-1 text-sm text-putih/90">poin</span>
           </p>
-        </>
-      }
-    >
-      <div className="bg-paper">
-        {/* pita progres: satu balok per soal */}
-        <ol aria-label="Progres soal" className="flex h-4 gap-1 bg-paper">
-          {Array.from({ length: game.total }, (_, i) => {
-            const r = results[i];
-            const tone =
-              r === true ? "bg-benar" : r === false ? "bg-salah" : i === index ? "bg-accent" : "bg-surface-2";
-            const label = r === true ? "benar" : r === false ? "salah" : i === index ? "sedang dijawab" : "belum";
-            return (
-              <li key={i} className={`flex-1 transition-colors duration-300 ${tone}`}>
-                <span className="sr-only">
-                  Soal {i + 1}: {label}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
+        </div>
+      </header>
 
-        <div className="px-5 pt-6 pb-8 sm:px-10 sm:pt-8 sm:pb-10">
-          <div className="flex items-end justify-between gap-6">
-            <h1 className="text-xl font-semibold tracking-tight">
-              Soal {index + 1} <span className="font-normal text-muted">dari {game.total}</span>
-            </h1>
-            <p className={`text-right leading-none ${urgent ? "text-salah" : ""}`} aria-hidden>
-              <span className="text-5xl font-semibold tracking-[-0.04em] tabular-nums sm:text-6xl">
+      <div className="mx-auto max-w-[880px]">
+        {/* peta rute + timer */}
+        <section className="bg-abu px-3 pt-5 pb-4 sm:mt-4 sm:rounded-panel sm:px-6">
+          <RouteMap total={game.total} index={index} results={results} />
+          <p className="mt-2 flex justify-between gap-4 px-1 text-sm font-medium text-redup">
+            <span className="text-tinta">
+              Stasiun {index + 1} dari {game.total}
+            </span>
+            <span>Stasiun {game.total}: skor akhir</span>
+          </p>
+          <div className="mt-3 flex items-center gap-3 px-1">
+            <div
+              className="h-2.5 flex-1 overflow-hidden rounded-full bg-garis"
+              role="progressbar"
+              aria-label="Sisa waktu"
+              aria-valuemin={0}
+              aria-valuemax={game.timeLimitMs / 1000}
+              aria-valuenow={seconds}
+            >
+              <div
+                className={`h-full origin-left rounded-full bg-jingga transition-transform duration-100 ease-linear ${urgent ? "timer-urgent" : ""}`}
+                style={{ transform: `scaleX(${ratio})` }}
+              />
+            </div>
+            <p className="w-20 text-right leading-none" aria-hidden>
+              <span
+                key={urgent ? seconds : "calm"}
+                className={`inline-block font-display text-3xl font-bold tabular-nums ${urgent ? "animate-tick" : ""}`}
+              >
                 {feedback ? 0 : seconds}
               </span>
-              <span className="ml-1.5 text-base text-muted">detik</span>
+              <span className="ml-1 text-sm text-redup">detik</span>
             </p>
           </div>
+        </section>
 
-          {/* bar waktu */}
-          <div
-            className="mt-4 h-2.5 overflow-hidden bg-surface-2"
-            role="progressbar"
-            aria-label="Sisa waktu"
-            aria-valuemin={0}
-            aria-valuemax={game.timeLimitMs / 1000}
-            aria-valuenow={seconds}
-          >
-            <div
-              className={`h-full origin-left transition-transform duration-100 ease-linear ${urgent ? "bg-salah" : "bg-ink"}`}
-              style={{ transform: `scaleX(${ratio})` }}
-            />
-          </div>
+        <div className="px-4 sm:px-0">
+          {/* papan stasiun: soal */}
+          <section key={`board-${index}`} className="enter-arrive mt-5 rounded-panel bg-hijau px-5 py-5 text-putih sm:px-8 sm:py-7">
+            <h1 className="max-w-[30ch] font-display text-[clamp(1.75rem,1.3rem+1.8vw,2.6rem)] leading-[1.08] font-bold text-balance">
+              {q.prompt}
+            </h1>
+          </section>
 
-          <p
-            key={`prompt-${index}`}
-            className="enter mt-10 max-w-[34ch] text-[clamp(1.5rem,1.1rem+1.3vw,2.25rem)] leading-[1.15] font-semibold tracking-[-0.025em] text-balance"
-          >
-            {q.prompt}
-          </p>
-
-          <div key={`opts-${index}`} className="mt-8 grid gap-1.5 sm:grid-cols-2">
+          {/* pintu jawaban */}
+          <div key={`opts-${index}`} className="mt-3 grid gap-2 sm:mt-4 sm:grid-cols-2 sm:gap-2.5">
             {q.options.map((opt, i) => {
-              let tone = "bg-surface hover:bg-surface-2";
-              let keyTone = "bg-ink text-white";
-              if (feedback) {
-                if (i === feedback.correctIndex) {
-                  tone = "bg-benar text-white";
-                  keyTone = "bg-white text-benar";
-                } else if (i === feedback.chosen) {
-                  tone = "bg-salah text-white";
-                  keyTone = "bg-white text-salah";
-                } else {
-                  tone = "bg-surface opacity-45";
-                }
+              const isCorrect = feedback && i === feedback.correctIndex;
+              const isWrongPick = feedback && i === feedback.chosen && !feedback.correct;
+              const faded = feedback && !isCorrect && !isWrongPick;
+              let tone = "border-garis bg-putih hover:border-hijau hover:bg-hijau-muda";
+              let keyTone = "bg-tinta text-putih";
+              let motion = "";
+              if (isCorrect) {
+                tone = "border-hijau bg-hijau text-putih";
+                keyTone = "bg-putih text-hijau animate-stamp";
+              } else if (isWrongPick) {
+                tone = "border-salah bg-salah text-putih";
+                keyTone = "bg-putih text-salah";
+                motion = "animate-shake";
+              } else if (faded) {
+                tone = "border-garis bg-putih opacity-40";
               }
               return (
                 <button
                   key={i}
                   onClick={() => submit(i)}
                   disabled={!!feedback}
-                  className={`enter flex min-h-22 items-center gap-4 p-4 text-left text-lg leading-snug font-medium transition-[background-color,opacity,transform] duration-200 not-disabled:active:scale-[0.98] disabled:cursor-default ${tone}`}
-                  style={{ "--i": i + 1 } as React.CSSProperties}
+                  className={`enter-arrive relative flex min-h-16 items-center gap-4 rounded-panel border-2 px-4 py-3 text-left text-lg leading-snug font-semibold sm:min-h-20 sm:py-4 transition-[background-color,border-color,opacity] duration-200 not-disabled:active:scale-[0.98] disabled:cursor-default ${tone}`}
+                  style={{ "--i": i + 2 } as React.CSSProperties}
                 >
                   <span
-                    aria-hidden
-                    className={`grid size-10 shrink-0 place-items-center font-semibold transition-colors ${keyTone}`}
+                    className={`flex w-full items-center gap-4 ${motion} ${isCorrect && feedback?.correct ? "pr-16" : ""}`}
                   >
-                    {LETTERS[i]}
+                    <span
+                      aria-hidden
+                      className={`grid size-10 shrink-0 place-items-center rounded-full font-display text-xl font-bold transition-colors ${keyTone}`}
+                    >
+                      {isCorrect ? <CheckIcon className="size-5" /> : isWrongPick ? <CrossIcon className="size-5" /> : LETTERS[i]}
+                    </span>
+                    <span className="flex-1">{opt}</span>
                   </span>
-                  {opt}
+                  {isCorrect && feedback?.correct && (
+                    <span
+                      aria-hidden
+                      className="absolute top-1/2 right-3 -mt-4 animate-float-up rounded-full bg-jingga px-2.5 py-1 font-display text-lg font-bold text-tinta"
+                    >
+                      +{feedback.points}
+                    </span>
+                  )}
                 </button>
               );
             })}
           </div>
 
-          <div aria-live="polite" className="mt-8 min-h-24">
+          {/* hasil per soal */}
+          <div aria-live="polite" className="mt-6 min-h-28">
             {feedback ? (
-              <div className="animate-pop">
-                <p className={`text-3xl font-semibold tracking-tight ${feedback.correct ? "text-benar" : "text-salah"}`}>
+              <div className="animate-rise">
+                <p
+                  className={`flex items-center gap-2.5 font-display text-3xl font-bold ${
+                    feedback.correct ? "text-hijau" : "text-salah"
+                  }`}
+                >
+                  <span
+                    className={`grid size-9 animate-stamp place-items-center rounded-full text-putih ${
+                      feedback.correct ? "bg-hijau" : "bg-salah"
+                    }`}
+                  >
+                    {feedback.correct ? <CheckIcon className="size-5" /> : <CrossIcon className="size-5" />}
+                  </span>
                   {feedback.correct
                     ? `Benar, +${feedback.points} poin`
                     : feedback.timedOut || feedback.chosen === null
@@ -297,23 +317,13 @@ function PlayGame() {
                 <p className="mt-2 max-w-[62ch] text-lg leading-relaxed">{feedback.explanation}</p>
               </div>
             ) : (
-              <p className="text-base text-muted">
+              <p className="text-base text-redup">
                 Tekan 1 sampai {q.options.length} atau A sampai {LETTERS[q.options.length - 1]} untuk menjawab.
               </p>
             )}
           </div>
         </div>
       </div>
-    </Shell>
-  );
-}
-
-/** Bingkai halaman: latar navy, bar atas di atas latar, kartu kertas di tengah. */
-function Shell({ bar, children }: { bar?: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <main className="mx-auto flex min-h-dvh max-w-[1040px] flex-col px-3 pt-3 pb-10 sm:px-6 sm:pt-6">
-      <div className="flex min-h-14 items-center justify-between gap-4 px-1 pb-3">{bar}</div>
-      {children}
     </main>
   );
 }
