@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+/// Divisi, contoh: DPSB = Divisi Pengembangan SDM dan Budaya Perusahaan
+model Division {
+  id          Int    @id @default(autoincrement())
+  kode        String @unique @db.VarChar(20)
+  kepanjangan String @db.VarChar(255)
+
+  subDivisions SubDivision[]
+  positions    Position[]
+  sessions GameSession[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("divisions")
+}
+
+model SubDivision {
+  id         Int    @id @default(autoincrement())
+  nama       String @db.VarChar(255)
+  divisionId Int    @map("division_id")
+
+  division  Division   @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  positions Position[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([divisionId, nama])
+  @@map("sub_divisions")
+}
+
+/// Jabatan. level: makin kecil makin tinggi (1 = Kepala Divisi, 2 = Kepala Sub Divisi, dst.)
+model Position {
+  id            Int    @id @default(autoincrement())
+  namaJabatan   String @map("nama_jabatan") @db.VarChar(150)
+  level         Int    @db.TinyInt
+  divisionId    Int    @map("division_id")
+  subDivisionId Int?   @map("sub_division_id")
+
+  division    Division     @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  subDivision SubDivision? @relation(fields: [subDivisionId], references: [id], onDelete: SetNull)
+  officials   Official[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([level])
+  @@map("positions")
+}
+
+/// Pejabat. Satu orang boleh merangkap jabatan (baris berbeda, nama sama).
+model Official {
+  id         Int    @id @default(autoincrement())
+  nama       String @db.VarChar(150)
+  positionId Int    @map("position_id")
+
+  position Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("officials")
+}
+
+model GameSession {
+  id String @id @default(cuid())
+  namaPemain String? @map("nama_pemain") @db.VarChar(50)
+  divisionId Int @map("division_id")
+  questions Json
+  answers Json?
+  currentIndex Int @default(0) @map("current_index")
+  questionStartedAt DateTime @default(now()) @map("question_started_at")
+  skor Int @default(0)
+  selesai Boolean @default(false)
+
+  division Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([divisionId, skor])
+  @@map("game_sessions")
+}

@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma client hasil generate
+/src/generated/prisma
+
+# hasil pemeriksaan desain (taste-skill)
+.taste-skill/
