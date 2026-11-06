@@ -133,9 +133,22 @@ const globalForPrisma = globalThis as unknown as {
   prisma?: ReturnType<typeof createPrismaClient>;
 };
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+function getPrisma() {
+  globalForPrisma.prisma ??= createPrismaClient();
+  return globalForPrisma.prisma;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+/**
+ * Client dibuat saat pertama kali dipakai, bukan saat file di-import.
+ * Dengan begitu `next build` tidak butuh env database.
+ */
+export const prisma = new Proxy({} as ReturnType<typeof createPrismaClient>, {
+  get(_target, prop) {
+    const client = getPrisma();
+    const value = Reflect.get(client, prop, client);
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});
 
 /** Ambil seluruh data organisasi dalam bentuk yang dipakai question-generator. */
 export async function getOrgData(): Promise<OrgData> {
