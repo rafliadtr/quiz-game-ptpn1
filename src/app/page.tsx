@@ -10,10 +10,19 @@ import StartForm from "@/components/StartForm";
 async function WithDivisions() {
   // tandai bagian ini dinamis, supaya data divisi tidak dibekukan saat build
   await connection();
-  const divisions = await prisma.division.findMany({
-    select: { id: true, kode: true, kepanjangan: true },
-    orderBy: { kode: "asc" },
-  });
+  let divisions;
+  try {
+    divisions = await prisma.division.findMany({
+      select: { id: true, kode: true, kepanjangan: true },
+      orderBy: { kode: "asc" },
+    });
+  } catch (err) {
+    // tampilkan penyebab asli dari driver di log Vercel (Prisma menyembunyikannya)
+    const cause = (err as { meta?: { driverAdapterError?: { cause?: unknown } } })
+      .meta?.driverAdapterError?.cause;
+    console.error("[db] gagal mengambil divisi. Penyebab:", JSON.stringify(cause, null, 2));
+    throw err;
+  }
   return <StartForm divisions={divisions} />;
 }
 
