@@ -22,6 +22,18 @@ function readCa(): string | undefined {
 }
 
 function createPrismaClient() {
+  const ca = process.env.DATABASE_SSL === "true" ? readCa() : undefined;
+  // Log konfigurasi (tanpa password) supaya mudah dicek di log Vercel
+  console.log("[prisma] config", {
+    host: process.env.DATABASE_HOST ?? "(kosong -> localhost)",
+    port: process.env.DATABASE_PORT ?? "(kosong -> 3306)",
+    user: process.env.DATABASE_USER ?? "(kosong)",
+    database: process.env.DATABASE_NAME ?? "(kosong)",
+    passwordSet: Boolean(process.env.DATABASE_PASSWORD),
+    ssl: process.env.DATABASE_SSL === "true",
+    caLength: ca?.length ?? 0,
+    caComplete: Boolean(ca?.includes("-----END CERTIFICATE-----")),
+  });
   const adapter = new PrismaMariaDb({
     host: process.env.DATABASE_HOST ?? "localhost",
     port: Number(process.env.DATABASE_PORT ?? 3306),
@@ -33,7 +45,7 @@ function createPrismaClient() {
     // Database cloud (Aiven) wajib SSL. Di lokal (Laragon) biarkan DATABASE_SSL kosong.
     ssl:
       process.env.DATABASE_SSL === "true"
-        ? { ca: readCa(), rejectUnauthorized: true }
+        ? { ca, rejectUnauthorized: true }
         : undefined,
   });
   return new PrismaClient({ adapter });
