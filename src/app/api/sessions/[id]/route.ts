@@ -43,7 +43,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       no: i + 1,
       prompt: q.prompt,
       options: q.options,
-      correctIndex: q.answerIndex,
+      // easter egg: pilihan pemain sendiri yang ditandai benar
+      correctIndex: q.allCorrect && a?.correct && a.chosen !== null ? a.chosen : q.answerIndex,
       chosen: a?.chosen ?? null,
       correct: a?.correct ?? false,
       points: a?.points ?? 0,

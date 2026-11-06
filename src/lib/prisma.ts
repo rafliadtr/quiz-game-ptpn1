@@ -10,6 +10,14 @@ function createPrismaClient() {
     password: process.env.DATABASE_PASSWORD ?? "",
     database: process.env.DATABASE_NAME ?? "quiz_game",
     connectionLimit: 5,
+    // Database cloud (Aiven) wajib SSL. Di lokal (Laragon) biarkan DATABASE_SSL kosong.
+    ssl:
+      process.env.DATABASE_SSL === "true"
+        ? {
+            ca: process.env.DATABASE_SSL_CA?.replace(/\\n/g, "\n"),
+            rejectUnauthorized: true,
+          }
+        : undefined,
   });
   return new PrismaClient({ adapter });
 }

@@ -40,7 +40,8 @@ export async function POST(
     now.getTime() - session.questionStartedAt.getTime(),
   );
   const timedOut = elapsed > GAME.TIME_LIMIT_MS + GAME.GRACE_MS;
-  const correct = !timedOut && chosen === q.answerIndex;
+  // soal easter egg: opsi mana pun benar, asal dijawab sebelum waktu habis
+  const correct = !timedOut && chosen !== null && (q.allCorrect || chosen === q.answerIndex);
   const remaining = Math.max(0, GAME.TIME_LIMIT_MS - elapsed);
   const points = correct
     ? GAME.BASE_POINTS +
@@ -78,7 +79,8 @@ export async function POST(
   return Response.json({
     correct,
     timedOut,
-    correctIndex: q.answerIndex,
+    // easter egg: pilihan pemain sendiri yang ditandai benar
+    correctIndex: q.allCorrect && correct && chosen !== null ? chosen : q.answerIndex,
     explanation: q.explanation,
     points,
     totalScore: session.skor + points,

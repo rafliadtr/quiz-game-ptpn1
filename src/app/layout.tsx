@@ -19,7 +19,7 @@ const barlowCondensed = Barlow_Condensed({
 export const metadata: Metadata = {
   title: "Kenali Divisimu",
   description:
-    "Kuis Head Office PTPN I tentang kepanjangan divisi, sub divisi, dan pejabatnya.",
+    "Kuis Head Office PTPN I tentang kepanjangan divisi, sub divisi, dan karyawannya.",
   robots: { index: false, follow: false },
 };
 

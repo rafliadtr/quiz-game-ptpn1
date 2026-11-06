@@ -5,7 +5,7 @@
  */
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/generated/prisma/client";
-import { generateQuestions, toPublic } from "@/lib/question-generator";
+import { generateQuestions, isEasterEggName, toPublic } from "@/lib/question-generator";
 import { GAME } from "@/lib/game-config";
 
 export async function POST(req: Request) {
@@ -36,7 +36,8 @@ export async function POST(req: Request) {
 
   const questions = generateQuestions(
     { divisions, subDivisions, positions, officials },
-    { divisionId, mode, count: GAME.QUESTION_COUNT },
+    // nama tertentu (lihat isEasterEggName) membuka soal rahasia DPSB
+    { divisionId, mode, count: GAME.QUESTION_COUNT, easterEgg: isEasterEggName(namaPemain) },
   );
 
   if (questions.length === 0) {

@@ -4,7 +4,7 @@
  * Layar awal "Peta Jalur Divisi". Pemain memilih jalurnya (divisi) dan rute (mode),
  * papan keberangkatan hijau terisi langsung dari pilihan itu.
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { GAME } from "@/lib/game-config";
 import { LineBadge } from "@/components/Route";
@@ -42,6 +42,11 @@ export default function StartForm({ divisions }: { divisions: DivisionOption[] |
   const [error, setError] = useState<string | null>(null);
 
   const chosen = divisions?.find((d) => d.id === divisionId) ?? null;
+
+  // cacheComponents menyimpan halaman ini (beserta state-nya) saat pindah ke /play, lalu
+  // memunculkannya lagi lewat "Main lagi". Saat halaman disembunyikan, effect dibersihkan:
+  // reset tombol di sini supaya tidak tertahan di "Menyiapkan soal...".
+  useEffect(() => () => setLoading(false), []);
 
   async function start(e: React.FormEvent) {
     e.preventDefault();
